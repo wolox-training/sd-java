@@ -5,12 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 @Entity
 public class Book {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BOOK_SEQ")
+  @SequenceGenerator(name = "BOOK_SEQ", sequenceName = "BOOK_SEQ")
   private Long id;
   private String genre;
 
@@ -35,8 +37,11 @@ public class Book {
   @Column(nullable=false)
   private  Integer pages;
 
-  @Column(nullable=false)
+  @Column(nullable=false, unique = true)
   private  String isbn;
+
+  public Book() {
+  }
 
   public String getImage() {
     return image;
@@ -113,9 +118,4 @@ public class Book {
   public Long getId() {
     return id;
   }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
 }
