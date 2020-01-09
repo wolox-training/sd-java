@@ -8,6 +8,7 @@ class TrainingApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// Added during config
 	}
 
 }
