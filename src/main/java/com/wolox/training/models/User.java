@@ -31,7 +31,7 @@ public class User {
   @Column(nullable = false)
   private LocalDate birthDate;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
   private List<Book> books;
 
   public User(){
