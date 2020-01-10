@@ -1,10 +1,10 @@
 package com.wolox.training.controllers;
 
+import com.wolox.training.Constant;
 import com.wolox.training.exceptions.IdMismatchException;
 import com.wolox.training.exceptions.NotFoundException;
 import com.wolox.training.models.Book;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,13 +27,18 @@ public class BookController {
   private BookRepository bookRepository;
 
   @GetMapping
-  public Iterable findAll() {
+  public List<Book> findAll() {
     return bookRepository.findAll();
   }
 
+  @GetMapping("/{id}")
+  public Book findById(@RequestParam Long id){
+    return bookRepository.findById(id).orElseThrow(() -> new NotFoundException(Constant.BOOK_NOT_FOUND));
+  }
+
   @GetMapping(params = "title")
-  public Optional<List<Book>> findByTitle(@RequestParam String title) {
-    return bookRepository.findByTitle(title);
+  public List<Book> findByTitle(@RequestParam String title) {
+    return bookRepository.findByTitle(title).orElseThrow(() -> new NotFoundException(Constant.BOOK_NOT_FOUND));
   }
 
   @PostMapping
@@ -44,20 +49,16 @@ public class BookController {
 
   @DeleteMapping("/{id}")
   public void delete(@PathVariable Long id) {
-    if (!bookRepository.findById(id).isPresent()) {
-      throw new NotFoundException("Book Not Found");
-    }
+    bookRepository.findById(id).orElseThrow(() -> new NotFoundException(Constant.BOOK_NOT_FOUND));
     bookRepository.deleteById(id);
   }
 
   @PutMapping("/{id}")
   public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
     if (!book.getId().equals(id)) {
-      throw new IdMismatchException("Book Id Mismatch");
+      throw new IdMismatchException(Constant.BOOK_ID_MISMATCH);
     }
-    if (!bookRepository.findById(id).isPresent()) {
-      throw new NotFoundException("Book Not Found");
-    }
+    bookRepository.findById(id).orElseThrow(() -> new NotFoundException(Constant.BOOK_NOT_FOUND));
     return bookRepository.save(book);
   }
 }
