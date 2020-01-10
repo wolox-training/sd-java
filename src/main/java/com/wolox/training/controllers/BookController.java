@@ -32,7 +32,7 @@ public class BookController {
   }
 
   @GetMapping("/{id}")
-  public Book findById(@RequestParam Long id){
+  public Book findById(@PathVariable Long id){
     return bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(Constant.BOOKNOTFOUND));
   }
 
