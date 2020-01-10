@@ -4,6 +4,7 @@ import com.wolox.training.exceptions.books.BookIdMismatchException;
 import com.wolox.training.exceptions.books.BookNotFoundException;
 import com.wolox.training.models.Book;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.wolox.training.repositories.BookRepository;
@@ -29,9 +32,9 @@ public class BookController {
     return bookRepository.findAll();
   }
 
-  @GetMapping("/title/{bookTitle}")
-  public List findByTitle(@PathVariable String bookTitle) {
-    return bookRepository.findByTitle(bookTitle);
+  @GetMapping(params = "title")
+  public Optional<List<Book>> findByTitle(@RequestParam String title) {
+    return bookRepository.findByTitle(title);
   }
 
   @PostMapping
