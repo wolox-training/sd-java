@@ -114,7 +114,7 @@ public class UserController {
       @ApiResponse(code = 401, message = Constant.NOT_AUTHORIZED_MESSAGE),
       @ApiResponse(code = 403, message = Constant.FORBIDDEN_MESSAGE)
   })
-  @PutMapping("/{id}/books/{book_id}")
+  @PutMapping("/{id}/books/{bookId}")
   public User addBook(
       @ApiParam(value = "Id of the user to whom the book is going to be added") @PathVariable Long id,
       @ApiParam(value = "Id of the book to be added") @PathVariable Long bookId) {
@@ -146,7 +146,7 @@ public class UserController {
       @ApiResponse(code = 401, message = Constant.NOT_AUTHORIZED_MESSAGE),
       @ApiResponse(code = 403, message = Constant.FORBIDDEN_MESSAGE)
   })
-  @DeleteMapping("/{id}/books/{book_id}")
+  @DeleteMapping("/{id}/books/{bookId}")
   public User removeBook(
       @ApiParam(value = "Id of the user to whom the book is going to be removed") @PathVariable Long id,
       @ApiParam(value = "Id of the book to be removed") @PathVariable Long bookId) {
