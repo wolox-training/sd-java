@@ -1,5 +1,7 @@
 package com.wolox.training.models;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 @Entity
+@ApiModel(description = "Books from the OpenLibrary & WBooks data base")
 public class Book {
 
   @Id
@@ -18,34 +21,44 @@ public class Book {
   private Long id;
 
   @Column
+  @ApiModelProperty(notes = "i.e horror, comedy, drama, etc...")
   private String genre;
 
-  @Column(nullable=false)
-  private  String author;
+  @Column(nullable = false)
+  @ApiModelProperty(notes = "Name of the book's writer")
+  private String author;
 
-  @Column(nullable=false)
-  private  String image;
+  @Column(nullable = false)
+  @ApiModelProperty(notes = "Book's cover picture")
+  private String image;
 
-  @Column(nullable=false)
-  private  String title;
+  @Column(nullable = false)
+  @ApiModelProperty(notes = "Book's title")
+  private String title;
 
-  @Column(nullable=false)
+  @Column(nullable = false)
+  @ApiModelProperty(notes = "Book's subtitle")
   private String subtitle;
 
-  @Column(nullable=false)
+  @Column(nullable = false)
+  @ApiModelProperty(notes = "Book's plublishing house name")
   private String publisher;
 
-  @Column(nullable=false)
+  @Column(nullable = false)
+  @ApiModelProperty(notes = "Book's release year")
   private String year;
 
-  @Column(nullable=false)
-  private  Integer pages;
+  @Column(nullable = false)
+  @ApiModelProperty(notes = "Book's number of pages")
+  private Integer pages;
 
-  @Column(nullable=false, unique = true)
-  private  String isbn;
+  @Column(nullable = false, unique = true)
+  @ApiModelProperty(notes = "Book's unique isbn identifier")
+  private String isbn;
 
   @ManyToOne
-  @JoinColumn(name="user_id")
+  @JoinColumn(name = "user_id")
+  @ApiModelProperty(notes = "User to whom the book was rented to")
   private User user;
 
   public Book() {

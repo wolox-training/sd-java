@@ -18,6 +18,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "users")
 public class User {
+
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
   @SequenceGenerator(name = "USER_SEQ", sequenceName = "USER_SEQ")
@@ -35,7 +36,7 @@ public class User {
   @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.REFRESH})
   private List<Book> books;
 
-  public User(){
+  public User() {
     books = new ArrayList<>();
   }
 
@@ -76,7 +77,7 @@ public class User {
   }
 
   public void addBook(Book book) throws AlreadyOwnedException {
-    if(books.contains(book)) {
+    if (books.contains(book)) {
       throw new AlreadyOwnedException("Book Already Owned");
     } else {
       books.add(book);
@@ -84,7 +85,7 @@ public class User {
   }
 
   public void removeBook(Book book) throws NotOwnedException {
-    if(!books.contains(book)) {
+    if (!books.contains(book)) {
       throw new NotOwnedException("Book Not Owned");
     } else {
       books.remove(book);
