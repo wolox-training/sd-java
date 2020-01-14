@@ -3,14 +3,13 @@ package com.wolox.training.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 
@@ -44,7 +43,7 @@ public class Book {
   private String subtitle;
 
   @Column(nullable = false)
-  @ApiModelProperty(notes = "Book's plublishing house name")
+  @ApiModelProperty(notes = "Book's publishing house name")
   private String publisher;
 
   @Column(nullable = false)
@@ -59,14 +58,15 @@ public class Book {
   @ApiModelProperty(notes = "Book's unique isbn identifier")
   private String isbn;
 
-  @ManyToMany
-  @JoinTable(name = "user_books", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "book_id"))
+  @ManyToMany(mappedBy = "books")
+  @JsonIgnore
   private List<User> users;
 
   public Book() {
+    users = new ArrayList<>();
   }
 
-  public List<User> getUser() {
+  public List<User> getUsers() {
     return users;
   }
 

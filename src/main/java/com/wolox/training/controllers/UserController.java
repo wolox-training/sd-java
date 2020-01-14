@@ -13,8 +13,6 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -107,7 +105,7 @@ public class UserController {
     return userRepository.save(user);
   }
 
-/*  @ApiOperation(value = "Add a book to a user", response = User.class)
+  @ApiOperation(value = "Add a book to a user", response = User.class)
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = Constant.OK_MESSAGE),
       @ApiResponse(code = 404, message = Constant.NOT_FOUND_MESSAGE),
@@ -125,7 +123,7 @@ public class UserController {
 
     user.addBook(book);
     return userRepository.save(user);
-  }*/
+  }
 
   @ApiOperation(value = "Delete a user")
   @ApiResponses(value = {
@@ -140,7 +138,7 @@ public class UserController {
     userRepository.deleteById(id);
   }
 
-/*  @ApiOperation(value = "Delete a book from a user", response = User.class)
+  @ApiOperation(value = "Delete a book from a user", response = User.class)
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = Constant.OK_MESSAGE),
       @ApiResponse(code = 404, message = Constant.NOT_FOUND_MESSAGE),
@@ -157,5 +155,5 @@ public class UserController {
         .orElseThrow(() -> new NotFoundException(Constant.BOOK_NOT_FOUND));
     user.removeBook(book);
     return userRepository.save(user);
-  }*/
+  }
 }

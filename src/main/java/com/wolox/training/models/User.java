@@ -73,19 +73,17 @@ public class User {
   @Column(nullable = false)
   private LocalDate birthDate;
 
-  @ManyToMany(mappedBy = "users", cascade = {CascadeType.MERGE, CascadeType.REFRESH,
-      CascadeType.PERSIST})
+  @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
   private List<Book> books;
 
   public User() {
     books = new ArrayList<>();
   }
 
-/*  public void addBook(Book book) throws AlreadyOwnedException {
+  public void addBook(Book book) throws AlreadyOwnedException {
     if (books.contains(book)) {
       throw new AlreadyOwnedException("Book Already Owned");
     } else {
-      book.setUser(this);
       books.add(book);
     }
   }
@@ -94,8 +92,7 @@ public class User {
     if (!books.contains(book)) {
       throw new NotOwnedException("Book Not Owned");
     } else {
-      book.setUser(null);
       books.remove(book);
     }
-  }*/
+  }
 }
