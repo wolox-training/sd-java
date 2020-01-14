@@ -1,8 +1,8 @@
 package com.wolox.training.controllers;
 
 import com.wolox.training.Constant;
-import com.wolox.training.exceptions.books.BookIdMismatchException;
-import com.wolox.training.exceptions.books.BookNotFoundException;
+import com.wolox.training.exceptions.IdMismatchException;
+import com.wolox.training.exceptions.NotFoundException;
 import com.wolox.training.models.Book;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +33,12 @@ public class BookController {
 
   @GetMapping("/{id}")
   public Book findById(@PathVariable Long id){
-    return bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(Constant.BOOKNOTFOUND));
+    return bookRepository.findById(id).orElseThrow(() -> new NotFoundException(Constant.BOOK_NOT_FOUND));
   }
 
   @GetMapping(params = "title")
   public List<Book> findByTitle(@RequestParam String title) {
-    return bookRepository.findByTitle(title).orElseThrow(() -> new BookNotFoundException(Constant.BOOKNOTFOUND));
+    return bookRepository.findByTitle(title).orElseThrow(() -> new NotFoundException(Constant.BOOK_NOT_FOUND));
   }
 
   @PostMapping
@@ -49,16 +49,16 @@ public class BookController {
 
   @DeleteMapping("/{id}")
   public void delete(@PathVariable Long id) {
-    bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(Constant.BOOKNOTFOUND));
+    bookRepository.findById(id).orElseThrow(() -> new NotFoundException(Constant.BOOK_NOT_FOUND));
     bookRepository.deleteById(id);
   }
 
   @PutMapping("/{id}")
   public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
     if (!book.getId().equals(id)) {
-      throw new BookIdMismatchException(Constant.BOOKMISMATCH);
+      throw new IdMismatchException(Constant.BOOK_ID_MISMATCH);
     }
-    bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(Constant.BOOKNOTFOUND));
+    bookRepository.findById(id).orElseThrow(() -> new NotFoundException(Constant.BOOK_NOT_FOUND));
     return bookRepository.save(book);
   }
 }
