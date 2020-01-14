@@ -24,4 +24,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
+    implementation 'org.jetbrains:annotations:15.0'
+	implementation 'com.github.rozidan:modelmapper-spring-boot-starter:2.3.1'
 }
