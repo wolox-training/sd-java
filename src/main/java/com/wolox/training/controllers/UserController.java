@@ -46,7 +46,7 @@ public class UserController {
       @ApiResponse(code = 403, message = Constant.FORBIDDEN_MESSAGE)
   })
   @GetMapping
-  public List<User> allBooks() {
+  public Iterable<User> allUsers() {
     return userRepository.findAll();
   }
 
@@ -107,7 +107,7 @@ public class UserController {
     return userRepository.save(user);
   }
 
-  @ApiOperation(value = "Add a book to a user", response = User.class)
+/*  @ApiOperation(value = "Add a book to a user", response = User.class)
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = Constant.OK_MESSAGE),
       @ApiResponse(code = 404, message = Constant.NOT_FOUND_MESSAGE),
@@ -122,9 +122,10 @@ public class UserController {
         .orElseThrow(() -> new NotFoundException(Constant.USER_NOT_FOUND));
     Book book = bookRepository.findById(bookId)
         .orElseThrow(() -> new NotFoundException(Constant.BOOK_NOT_FOUND));
+
     user.addBook(book);
     return userRepository.save(user);
-  }
+  }*/
 
   @ApiOperation(value = "Delete a user")
   @ApiResponses(value = {
@@ -139,7 +140,7 @@ public class UserController {
     userRepository.deleteById(id);
   }
 
-  @ApiOperation(value = "Delete a book from a user", response = User.class)
+/*  @ApiOperation(value = "Delete a book from a user", response = User.class)
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = Constant.OK_MESSAGE),
       @ApiResponse(code = 404, message = Constant.NOT_FOUND_MESSAGE),
@@ -156,5 +157,5 @@ public class UserController {
         .orElseThrow(() -> new NotFoundException(Constant.BOOK_NOT_FOUND));
     user.removeBook(book);
     return userRepository.save(user);
-  }
+  }*/
 }

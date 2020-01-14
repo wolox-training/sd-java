@@ -1,14 +1,17 @@
 package com.wolox.training.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 
 @Entity
@@ -56,20 +59,19 @@ public class Book {
   @ApiModelProperty(notes = "Book's unique isbn identifier")
   private String isbn;
 
-  @ManyToOne
-  @JoinColumn(name = "user_id")
-  @ApiModelProperty(notes = "User to whom the book was rented to")
-  private User user;
+  @ManyToMany
+  @JoinTable(name = "user_books", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "book_id"))
+  private List<User> users;
 
   public Book() {
   }
 
-  public User getUser() {
-    return user;
+  public List<User> getUser() {
+    return users;
   }
 
-  public void setUser(User user) {
-    this.user = user;
+  public void setUsers(List<User> users) {
+    this.users = users;
   }
 
   public String getImage() {
