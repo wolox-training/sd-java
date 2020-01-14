@@ -1,6 +1,7 @@
 package com.wolox.training.models;
 
-import com.wolox.training.exceptions.books.BookAlreadyOwnedException;
+import com.wolox.training.exceptions.AlreadyOwnedException;
+import com.wolox.training.exceptions.NotOwnedException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,11 +75,19 @@ public class User {
     this.books = books;
   }
 
-  public void addBook(Book book) throws BookAlreadyOwnedException {
+  public void addBook(Book book) throws AlreadyOwnedException {
     if(books.contains(book)) {
-      throw new BookAlreadyOwnedException("Book Already Owned");
+      throw new AlreadyOwnedException("Book Already Owned");
     } else {
       books.add(book);
+    }
+  }
+
+  public void removeBook(Book book) throws NotOwnedException {
+    if(!books.contains(book)) {
+      throw new NotOwnedException("Book Not Owned");
+    } else {
+      books.remove(book);
     }
   }
 }
