@@ -1,6 +1,10 @@
 package com.wolox.training.models;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.Preconditions;
+import com.wolox.training.Constant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
@@ -79,7 +83,7 @@ public class Book {
   }
 
   public void setImage(String image) {
-    this.image = image;
+    this.image = checkNotNull(image);
   }
 
   public String getGenre() {
@@ -95,6 +99,8 @@ public class Book {
   }
 
   public void setAuthor(String author) {
+    Preconditions
+        .checkArgument(author != null && !author.isEmpty(), Constant.NOT_NULL_MESSAGE, "author");
     this.author = author;
   }
 
@@ -103,7 +109,7 @@ public class Book {
   }
 
   public void setTitle(String title) {
-    this.title = title;
+    this.title = checkNotNull(title);
   }
 
   public String getSubtitle() {
@@ -111,7 +117,7 @@ public class Book {
   }
 
   public void setSubtitle(String subtitle) {
-    this.subtitle = subtitle;
+    this.subtitle = checkNotNull(subtitle);
   }
 
   public String getPublisher() {
@@ -119,7 +125,7 @@ public class Book {
   }
 
   public void setPublisher(String publisher) {
-    this.publisher = publisher;
+    this.publisher = checkNotNull(publisher);
   }
 
   public String getYear() {
@@ -127,7 +133,7 @@ public class Book {
   }
 
   public void setYear(String year) {
-    this.year = year;
+    this.year = checkNotNull(year);
   }
 
   public Integer getPages() {
@@ -135,7 +141,7 @@ public class Book {
   }
 
   public void setPages(Integer pages) {
-    this.pages = pages;
+    this.pages = checkNotNull(pages);
   }
 
   public String getIsbn() {
@@ -143,7 +149,7 @@ public class Book {
   }
 
   public void setIsbn(String isbn) {
-    this.isbn = isbn;
+    this.isbn = checkNotNull(isbn);
   }
 
   public Long getId() {

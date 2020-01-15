@@ -1,5 +1,7 @@
 package com.wolox.training.models;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.wolox.training.exceptions.AlreadyOwnedException;
 import com.wolox.training.exceptions.NotOwnedException;
 import java.time.LocalDate;
@@ -18,46 +20,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "users")
 public class User {
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getUserName() {
-    return userName;
-  }
-
-  public void setUserName(String userName) {
-    this.userName = userName;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public LocalDate getBirthDate() {
-    return birthDate;
-  }
-
-  public void setBirthDate(LocalDate birthDate) {
-    this.birthDate = birthDate;
-  }
-
-  public List<Book> getBooks() {
-    return books;
-  }
-
-  public void setBooks(List<Book> books) {
-    this.books = books;
-  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
@@ -78,6 +40,42 @@ public class User {
 
   public User() {
     books = new ArrayList<>();
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public String getUserName() {
+    return userName;
+  }
+
+  public void setUserName(String userName) {
+    this.userName = checkNotNull(userName);
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = checkNotNull(name);
+  }
+
+  public LocalDate getBirthDate() {
+    return birthDate;
+  }
+
+  public void setBirthDate(LocalDate birthDate) {
+    this.birthDate = checkNotNull(birthDate);
+  }
+
+  public List<Book> getBooks() {
+    return books;
+  }
+
+  public void setBooks(List<Book> books) {
+    this.books = books;
   }
 
   public void addBook(Book book) throws AlreadyOwnedException {
