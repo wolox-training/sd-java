@@ -2,6 +2,8 @@ package com.wolox.training.models;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.google.common.base.Preconditions;
+import com.wolox.training.Constant;
 import com.wolox.training.exceptions.AlreadyOwnedException;
 import com.wolox.training.exceptions.NotOwnedException;
 import java.time.LocalDate;
@@ -59,7 +61,10 @@ public class User {
   }
 
   public void setUserName(String userName) {
-    this.userName = checkNotNull(userName);
+    Preconditions
+        .checkArgument(userName != null && !userName.isEmpty(), Constant.NOT_NULL_MESSAGE,
+            "userName");
+    this.userName = userName;
   }
 
   public String getName() {
@@ -67,7 +72,9 @@ public class User {
   }
 
   public void setName(String name) {
-    this.name = checkNotNull(name);
+    Preconditions
+        .checkArgument(name != null && !name.isEmpty(), Constant.NOT_NULL_MESSAGE, "name");
+    this.name = name;
   }
 
   public LocalDate getBirthDate() {
@@ -75,7 +82,7 @@ public class User {
   }
 
   public void setBirthDate(LocalDate birthDate) {
-    this.birthDate = checkNotNull(birthDate);
+    this.birthDate = checkNotNull(birthDate, Constant.NOT_NULL_MESSAGE, "birthDate");
   }
 
   public List<Book> getBooks() {

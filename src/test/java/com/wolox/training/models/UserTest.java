@@ -47,21 +47,21 @@ public class UserTest {
     assertThat(persistedUser.getBirthDate(), equalTo(user.getBirthDate()));
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = NullPointerException.class)
   public void whenCreateUserWithoutUserName_thenThrowException() {
     user.setUserName(null);
     entityManager.persist(user);
     entityManager.flush();
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = NullPointerException.class)
   public void whenCreateUserWithoutName_thenThrowException() {
     user.setName(null);
     entityManager.persist(user);
     entityManager.flush();
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test(expected = NullPointerException.class)
   public void whenCreateBookWithoutBirthday_thenThrowException() {
     user.setBirthDate(null);
     entityManager.persist(user);
