@@ -109,7 +109,9 @@ public class Book {
   }
 
   public void setTitle(String title) {
-    this.title = checkNotNull(title);
+    Preconditions
+        .checkArgument(title != null && !title.isEmpty(), Constant.NOT_NULL_MESSAGE, "title");
+    this.title = title;
   }
 
   public String getSubtitle() {
@@ -117,7 +119,10 @@ public class Book {
   }
 
   public void setSubtitle(String subtitle) {
-    this.subtitle = checkNotNull(subtitle);
+    Preconditions
+        .checkArgument(subtitle != null && !subtitle.isEmpty(), Constant.NOT_NULL_MESSAGE,
+            "subtitle");
+    this.subtitle = subtitle;
   }
 
   public String getPublisher() {
@@ -125,7 +130,10 @@ public class Book {
   }
 
   public void setPublisher(String publisher) {
-    this.publisher = checkNotNull(publisher);
+    Preconditions
+        .checkArgument(publisher != null && !publisher.isEmpty(), Constant.NOT_NULL_MESSAGE,
+            "publisher");
+    this.publisher = publisher;
   }
 
   public String getYear() {
@@ -133,7 +141,9 @@ public class Book {
   }
 
   public void setYear(String year) {
-    this.year = checkNotNull(year);
+    Preconditions
+        .checkArgument(year != null && !year.isEmpty(), Constant.NOT_NULL_MESSAGE, "year");
+    this.year = year;
   }
 
   public Integer getPages() {
@@ -141,7 +151,7 @@ public class Book {
   }
 
   public void setPages(Integer pages) {
-    this.pages = checkNotNull(pages);
+    this.pages = checkNotNull(pages, Constant.NOT_NULL_MESSAGE, "pages");
   }
 
   public String getIsbn() {
@@ -149,6 +159,8 @@ public class Book {
   }
 
   public void setIsbn(String isbn) {
+    Preconditions
+        .checkArgument(isbn != null && !isbn.isEmpty(), Constant.NOT_NULL_MESSAGE, "isbn");
     this.isbn = checkNotNull(isbn);
   }
 
