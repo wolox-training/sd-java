@@ -70,6 +70,21 @@ public class Book {
     users = new ArrayList<>();
   }
 
+  public Book(String genre, String author, String image, String title, String subtitle,
+      String publisher, String year, Integer pages, String isbn,
+      List<User> users) {
+    this.genre = genre;
+    this.author = author;
+    this.image = image;
+    this.title = title;
+    this.subtitle = subtitle;
+    this.publisher = publisher;
+    this.year = year;
+    this.pages = pages;
+    this.isbn = isbn;
+    this.users = users;
+  }
+
   public List<User> getUsers() {
     return users;
   }
