@@ -3,7 +3,6 @@ package com.wolox.training.models;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.base.Preconditions;
 import com.wolox.training.Constant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -98,7 +97,7 @@ public class Book {
   }
 
   public void setImage(String image) {
-    this.image = checkNotNull(image);
+    this.image = checkNotNull(image, Constant.NOT_NULL_MESSAGE, "image");
   }
 
   public String getGenre() {
@@ -114,9 +113,7 @@ public class Book {
   }
 
   public void setAuthor(String author) {
-    Preconditions
-        .checkArgument(author != null && !author.isEmpty(), Constant.NOT_NULL_MESSAGE, "author");
-    this.author = author;
+    this.author = checkNotNull(author, Constant.NOT_FOUND_MESSAGE, "author");
   }
 
   public String getTitle() {
@@ -124,9 +121,7 @@ public class Book {
   }
 
   public void setTitle(String title) {
-    Preconditions
-        .checkArgument(title != null && !title.isEmpty(), Constant.NOT_NULL_MESSAGE, "title");
-    this.title = title;
+    this.title = checkNotNull(title, Constant.NOT_FOUND_MESSAGE, "title");
   }
 
   public String getSubtitle() {
@@ -134,10 +129,7 @@ public class Book {
   }
 
   public void setSubtitle(String subtitle) {
-    Preconditions
-        .checkArgument(subtitle != null && !subtitle.isEmpty(), Constant.NOT_NULL_MESSAGE,
-            "subtitle");
-    this.subtitle = subtitle;
+    this.subtitle = checkNotNull(subtitle, Constant.NOT_FOUND_MESSAGE, "subtitle");
   }
 
   public String getPublisher() {
@@ -145,10 +137,7 @@ public class Book {
   }
 
   public void setPublisher(String publisher) {
-    Preconditions
-        .checkArgument(publisher != null && !publisher.isEmpty(), Constant.NOT_NULL_MESSAGE,
-            "publisher");
-    this.publisher = publisher;
+    this.publisher = checkNotNull(publisher, Constant.NOT_FOUND_MESSAGE, "publisher");
   }
 
   public String getYear() {
@@ -156,9 +145,7 @@ public class Book {
   }
 
   public void setYear(String year) {
-    Preconditions
-        .checkArgument(year != null && !year.isEmpty(), Constant.NOT_NULL_MESSAGE, "year");
-    this.year = year;
+    this.year = checkNotNull(year, Constant.NOT_FOUND_MESSAGE, "year");
   }
 
   public Integer getPages() {
@@ -174,9 +161,7 @@ public class Book {
   }
 
   public void setIsbn(String isbn) {
-    Preconditions
-        .checkArgument(isbn != null && !isbn.isEmpty(), Constant.NOT_NULL_MESSAGE, "isbn");
-    this.isbn = checkNotNull(isbn);
+    this.isbn = checkNotNull(isbn, Constant.NOT_FOUND_MESSAGE, "isbn");
   }
 
   public Long getId() {

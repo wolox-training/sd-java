@@ -2,7 +2,6 @@ package com.wolox.training.models;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import com.google.common.base.Preconditions;
 import com.wolox.training.Constant;
 import com.wolox.training.exceptions.AlreadyOwnedException;
 import com.wolox.training.exceptions.NotOwnedException;
@@ -61,10 +60,7 @@ public class User {
   }
 
   public void setUserName(String userName) {
-    Preconditions
-        .checkArgument(userName != null && !userName.isEmpty(), Constant.NOT_NULL_MESSAGE,
-            "userName");
-    this.userName = userName;
+    this.userName = checkNotNull(userName, Constant.NOT_NULL_MESSAGE, "userName");
   }
 
   public String getName() {
@@ -72,9 +68,7 @@ public class User {
   }
 
   public void setName(String name) {
-    Preconditions
-        .checkArgument(name != null && !name.isEmpty(), Constant.NOT_NULL_MESSAGE, "name");
-    this.name = name;
+    this.name = checkNotNull(name, Constant.NOT_NULL_MESSAGE, "name");
   }
 
   public LocalDate getBirthDate() {
