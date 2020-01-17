@@ -13,8 +13,6 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,7 +44,7 @@ public class UserController {
       @ApiResponse(code = 403, message = Constant.FORBIDDEN_MESSAGE)
   })
   @GetMapping
-  public List<User> allBooks() {
+  public Iterable<User> allUsers() {
     return userRepository.findAll();
   }
 
@@ -114,7 +112,7 @@ public class UserController {
       @ApiResponse(code = 401, message = Constant.NOT_AUTHORIZED_MESSAGE),
       @ApiResponse(code = 403, message = Constant.FORBIDDEN_MESSAGE)
   })
-  @PutMapping("/{id}/books/{book_id}")
+  @PutMapping("/{id}/books/{bookId}")
   public User addBook(
       @ApiParam(value = "Id of the user to whom the book is going to be added") @PathVariable Long id,
       @ApiParam(value = "Id of the book to be added") @PathVariable Long bookId) {
@@ -122,6 +120,7 @@ public class UserController {
         .orElseThrow(() -> new NotFoundException(Constant.USER_NOT_FOUND));
     Book book = bookRepository.findById(bookId)
         .orElseThrow(() -> new NotFoundException(Constant.BOOK_NOT_FOUND));
+
     user.addBook(book);
     return userRepository.save(user);
   }
@@ -146,7 +145,7 @@ public class UserController {
       @ApiResponse(code = 401, message = Constant.NOT_AUTHORIZED_MESSAGE),
       @ApiResponse(code = 403, message = Constant.FORBIDDEN_MESSAGE)
   })
-  @DeleteMapping("/{id}/books/{book_id}")
+  @DeleteMapping("/{id}/books/{bookId}")
   public User removeBook(
       @ApiParam(value = "Id of the user to whom the book is going to be removed") @PathVariable Long id,
       @ApiParam(value = "Id of the book to be removed") @PathVariable Long bookId) {
