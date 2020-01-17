@@ -61,56 +61,56 @@ public class BookTest {
     assertThat(persistedBook.getPublisher(), equalTo(book.getPublisher()));
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void whenCreateBookWithoutPages_thenThrowException() {
     book.setPages(null);
     entityManager.persist(book);
     entityManager.flush();
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void whenCreateBookWithoutIsbn_thenThrowException() {
     book.setIsbn(null);
     entityManager.persist(book);
     entityManager.flush();
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void whenCreateBookWithoutImage_thenThrowException() {
     book.setImage(null);
     entityManager.persist(book);
     entityManager.flush();
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void whenCreateBookWithoutPublisher_thenThrowException() {
     book.setPublisher(null);
     entityManager.persist(book);
     entityManager.flush();
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void whenCreateBookWithoutAuthor_thenThrowException() {
     book.setAuthor(null);
     entityManager.persist(book);
     entityManager.flush();
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void whenCreateBookWithoutTitle_thenThrowException() {
     book.setTitle(null);
     entityManager.persist(book);
     entityManager.flush();
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void whenCreateBookWithoutSubtitle_thenThrowException() {
     book.setSubtitle(null);
     entityManager.persist(book);
     entityManager.flush();
   }
 
-  @Test(expected = NullPointerException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void whenCreateBookWithoutYear_thenThrowException() {
     book.setYear(null);
     entityManager.persist(book);

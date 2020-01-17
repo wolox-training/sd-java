@@ -1,7 +1,7 @@
 package com.wolox.training.models;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static org.hibernate.query.criteria.internal.ValueHandlerFactory.isNumeric;
+import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wolox.training.Constant;
@@ -82,16 +82,16 @@ public class Book {
   public Book(String genre, String author, String image, String title, String subtitle,
       String publisher, String year, Integer pages, String isbn,
       List<User> users) {
-    this.genre = genre;
-    this.author = author;
-    this.image = image;
-    this.title = title;
-    this.subtitle = subtitle;
-    this.publisher = publisher;
-    this.year = year;
-    this.pages = pages;
-    this.isbn = isbn;
-    this.users = users;
+    this.setGenre(genre);
+    this.setAuthor(author);
+    this.setImage(image);
+    this.setTitle(title);
+    this.setSubtitle(subtitle);
+    this.setPublisher(publisher);
+    this.setYear(year);
+    this.setPages(pages);
+    this.setIsbn(isbn);
+    this.setUsers(users);
   }
 
   public List<User> getUsers() {
@@ -179,7 +179,7 @@ public class Book {
   }
 
   public void setIsbn(String isbn) {
-    checkArgument(isbn != null && isNumeric(isbn), Constant.NOT_NULL_MESSAGE, "name");
+    checkArgument(isbn != null && isNumeric(isbn), Constant.INVALID, "isbn");
     this.isbn = isbn;
   }
 

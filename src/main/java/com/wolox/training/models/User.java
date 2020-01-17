@@ -49,10 +49,10 @@ public class User {
 
   public User(String userName, String name, LocalDate birthDate,
       List<Book> books) {
-    this.userName = userName;
-    this.name = name;
-    this.birthDate = birthDate;
-    this.books = books;
+    this.setUserName(userName);
+    this.setName(name);
+    this.setBirthDate(birthDate);
+    this.setBooks(books);
   }
 
   public Long getId() {
