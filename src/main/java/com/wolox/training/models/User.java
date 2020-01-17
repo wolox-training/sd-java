@@ -11,36 +11,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
 public class User {
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
-  @SequenceGenerator(name = "USER_SEQ", sequenceName = "USER_SEQ")
-  private Long id;
-
-  @Column(nullable = false, unique = true)
-  private String userName;
-
-  @Column(nullable = false)
-  private String name;
-
-  @Column(nullable = false)
-  private LocalDate birthDate;
-
-  @OneToMany(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-  private List<Book> books;
-
-  public User(){
-    books = new ArrayList<>();
-  }
 
   public Long getId() {
     return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getUserName() {
@@ -75,8 +59,29 @@ public class User {
     this.books = books;
   }
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
+  @SequenceGenerator(name = "USER_SEQ", sequenceName = "USER_SEQ")
+  private Long id;
+
+  @Column(nullable = false, unique = true)
+  private String userName;
+
+  @Column(nullable = false)
+  private String name;
+
+  @Column(nullable = false)
+  private LocalDate birthDate;
+
+  @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+  private List<Book> books;
+
+  public User() {
+    books = new ArrayList<>();
+  }
+
   public void addBook(Book book) throws AlreadyOwnedException {
-    if(books.contains(book)) {
+    if (books.contains(book)) {
       throw new AlreadyOwnedException("Book Already Owned");
     } else {
       books.add(book);
@@ -84,7 +89,7 @@ public class User {
   }
 
   public void removeBook(Book book) throws NotOwnedException {
-    if(!books.contains(book)) {
+    if (!books.contains(book)) {
       throw new NotOwnedException("Book Not Owned");
     } else {
       books.remove(book);

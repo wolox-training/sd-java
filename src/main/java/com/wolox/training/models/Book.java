@@ -1,15 +1,20 @@
 package com.wolox.training.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 
 @Entity
+@ApiModel(description = "Books from the OpenLibrary & WBooks data base")
 public class Book {
 
   @Id
@@ -18,45 +23,55 @@ public class Book {
   private Long id;
 
   @Column
+  @ApiModelProperty(notes = "i.e horror, comedy, drama, etc...")
   private String genre;
 
-  @Column(nullable=false)
-  private  String author;
+  @Column(nullable = false)
+  @ApiModelProperty(notes = "Name of the book's writer")
+  private String author;
 
-  @Column(nullable=false)
-  private  String image;
+  @Column(nullable = false)
+  @ApiModelProperty(notes = "Book's cover picture")
+  private String image;
 
-  @Column(nullable=false)
-  private  String title;
+  @Column(nullable = false)
+  @ApiModelProperty(notes = "Book's title")
+  private String title;
 
-  @Column(nullable=false)
+  @Column(nullable = false)
+  @ApiModelProperty(notes = "Book's subtitle")
   private String subtitle;
 
-  @Column(nullable=false)
+  @Column(nullable = false)
+  @ApiModelProperty(notes = "Book's publishing house name")
   private String publisher;
 
-  @Column(nullable=false)
+  @Column(nullable = false)
+  @ApiModelProperty(notes = "Book's release year")
   private String year;
 
-  @Column(nullable=false)
-  private  Integer pages;
+  @Column(nullable = false)
+  @ApiModelProperty(notes = "Book's number of pages")
+  private Integer pages;
 
-  @Column(nullable=false, unique = true)
-  private  String isbn;
+  @Column(nullable = false, unique = true)
+  @ApiModelProperty(notes = "Book's unique isbn identifier")
+  private String isbn;
 
-  @ManyToOne
-  @JoinColumn(name="user_id")
-  private User user;
+  @ManyToMany(mappedBy = "books")
+  @JsonIgnore
+  private List<User> users;
 
   public Book() {
+    users = new ArrayList<>();
   }
 
-  public User getUser() {
-    return user;
+  public List<User> getUsers() {
+    return users;
   }
 
-  public void setUser(User user) {
-    this.user = user;
+  public void setUsers(List<User> users) {
+    this.users = users;
   }
 
   public String getImage() {
