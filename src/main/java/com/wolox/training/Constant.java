@@ -17,6 +17,7 @@ public final class Constant {
 
   // Pre conditions
   public static final String NOT_NULL_MESSAGE = "%s can't be null";
+  public static final String INVALID          = "%s is invalid";
 
   private Constant() {
   }

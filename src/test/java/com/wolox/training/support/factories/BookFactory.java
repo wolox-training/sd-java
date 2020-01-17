@@ -25,7 +25,7 @@ public class BookFactory {
         faker.book().publisher(),
         faker.date().toString(),
         faker.number().numberBetween(10, 1000),
-        faker.code().isbn10(),
+        faker.number().digits(10),
         users
     );
   }

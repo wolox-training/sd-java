@@ -1,6 +1,7 @@
 package com.wolox.training.models;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.apache.commons.lang3.StringUtils.isNumeric;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wolox.training.Constant;
@@ -15,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @ApiModel(description = "Books from the OpenLibrary & WBooks data base")
@@ -30,34 +32,42 @@ public class Book {
   private String genre;
 
   @Column(nullable = false)
+  @NotNull
   @ApiModelProperty(notes = "Name of the book's writer")
   private String author;
 
   @Column(nullable = false)
+  @NotNull
   @ApiModelProperty(notes = "Book's cover picture")
   private String image;
 
   @Column(nullable = false)
+  @NotNull
   @ApiModelProperty(notes = "Book's title")
   private String title;
 
   @Column(nullable = false)
+  @NotNull
   @ApiModelProperty(notes = "Book's subtitle")
   private String subtitle;
 
   @Column(nullable = false)
+  @NotNull
   @ApiModelProperty(notes = "Book's publishing house name")
   private String publisher;
 
   @Column(nullable = false)
+  @NotNull
   @ApiModelProperty(notes = "Book's release year")
   private String year;
 
   @Column(nullable = false)
+  @NotNull
   @ApiModelProperty(notes = "Book's number of pages")
   private Integer pages;
 
   @Column(nullable = false, unique = true)
+  @NotNull
   @ApiModelProperty(notes = "Book's unique isbn identifier")
   private String isbn;
 
@@ -72,16 +82,16 @@ public class Book {
   public Book(String genre, String author, String image, String title, String subtitle,
       String publisher, String year, Integer pages, String isbn,
       List<User> users) {
-    this.genre = genre;
-    this.author = author;
-    this.image = image;
-    this.title = title;
-    this.subtitle = subtitle;
-    this.publisher = publisher;
-    this.year = year;
-    this.pages = pages;
-    this.isbn = isbn;
-    this.users = users;
+    this.setGenre(genre);
+    this.setAuthor(author);
+    this.setImage(image);
+    this.setTitle(title);
+    this.setSubtitle(subtitle);
+    this.setPublisher(publisher);
+    this.setYear(year);
+    this.setPages(pages);
+    this.setIsbn(isbn);
+    this.setUsers(users);
   }
 
   public List<User> getUsers() {
@@ -97,7 +107,8 @@ public class Book {
   }
 
   public void setImage(String image) {
-    this.image = checkNotNull(image, Constant.NOT_NULL_MESSAGE, "image");
+    checkArgument(image != null && !image.isEmpty(), Constant.NOT_NULL_MESSAGE, "image");
+    this.image = image;
   }
 
   public String getGenre() {
@@ -113,7 +124,8 @@ public class Book {
   }
 
   public void setAuthor(String author) {
-    this.author = checkNotNull(author, Constant.NOT_FOUND_MESSAGE, "author");
+    checkArgument(author != null && !author.isEmpty(), Constant.NOT_NULL_MESSAGE, "author");
+    this.author = author;
   }
 
   public String getTitle() {
@@ -121,7 +133,8 @@ public class Book {
   }
 
   public void setTitle(String title) {
-    this.title = checkNotNull(title, Constant.NOT_FOUND_MESSAGE, "title");
+    checkArgument(title != null && !title.isEmpty(), Constant.NOT_NULL_MESSAGE, "title");
+    this.title = title;
   }
 
   public String getSubtitle() {
@@ -129,7 +142,8 @@ public class Book {
   }
 
   public void setSubtitle(String subtitle) {
-    this.subtitle = checkNotNull(subtitle, Constant.NOT_FOUND_MESSAGE, "subtitle");
+    checkArgument(subtitle != null && !subtitle.isEmpty(), Constant.NOT_NULL_MESSAGE, "subtitle");
+    this.subtitle = subtitle;
   }
 
   public String getPublisher() {
@@ -137,7 +151,9 @@ public class Book {
   }
 
   public void setPublisher(String publisher) {
-    this.publisher = checkNotNull(publisher, Constant.NOT_FOUND_MESSAGE, "publisher");
+    checkArgument(publisher != null && !publisher.isEmpty(), Constant.NOT_NULL_MESSAGE,
+        "publisher");
+    this.publisher = publisher;
   }
 
   public String getYear() {
@@ -145,7 +161,8 @@ public class Book {
   }
 
   public void setYear(String year) {
-    this.year = checkNotNull(year, Constant.NOT_FOUND_MESSAGE, "year");
+    checkArgument(year != null && !year.isEmpty(), Constant.NOT_NULL_MESSAGE, "year");
+    this.year = year;
   }
 
   public Integer getPages() {
@@ -153,7 +170,8 @@ public class Book {
   }
 
   public void setPages(Integer pages) {
-    this.pages = checkNotNull(pages, Constant.NOT_NULL_MESSAGE, "pages");
+    checkArgument(pages != null && pages > 0, Constant.INVALID, "pages");
+    this.pages = pages;
   }
 
   public String getIsbn() {
@@ -161,7 +179,8 @@ public class Book {
   }
 
   public void setIsbn(String isbn) {
-    this.isbn = checkNotNull(isbn, Constant.NOT_FOUND_MESSAGE, "isbn");
+    checkArgument(isbn != null && isNumeric(isbn), Constant.INVALID, "isbn");
+    this.isbn = isbn;
   }
 
   public Long getId() {
