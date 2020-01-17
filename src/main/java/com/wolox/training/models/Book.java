@@ -1,6 +1,7 @@
 package com.wolox.training.models;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
+import static org.hibernate.query.criteria.internal.ValueHandlerFactory.isNumeric;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wolox.training.Constant;
@@ -15,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @ApiModel(description = "Books from the OpenLibrary & WBooks data base")
@@ -30,34 +32,42 @@ public class Book {
   private String genre;
 
   @Column(nullable = false)
+  @NotNull
   @ApiModelProperty(notes = "Name of the book's writer")
   private String author;
 
   @Column(nullable = false)
+  @NotNull
   @ApiModelProperty(notes = "Book's cover picture")
   private String image;
 
   @Column(nullable = false)
+  @NotNull
   @ApiModelProperty(notes = "Book's title")
   private String title;
 
   @Column(nullable = false)
+  @NotNull
   @ApiModelProperty(notes = "Book's subtitle")
   private String subtitle;
 
   @Column(nullable = false)
+  @NotNull
   @ApiModelProperty(notes = "Book's publishing house name")
   private String publisher;
 
   @Column(nullable = false)
+  @NotNull
   @ApiModelProperty(notes = "Book's release year")
   private String year;
 
   @Column(nullable = false)
+  @NotNull
   @ApiModelProperty(notes = "Book's number of pages")
   private Integer pages;
 
   @Column(nullable = false, unique = true)
+  @NotNull
   @ApiModelProperty(notes = "Book's unique isbn identifier")
   private String isbn;
 
@@ -82,7 +92,8 @@ public class Book {
   }
 
   public void setImage(String image) {
-    this.image = checkNotNull(image, Constant.NOT_NULL_MESSAGE, "image");
+    checkArgument(image != null && !image.isEmpty(), Constant.NOT_NULL_MESSAGE, "image");
+    this.image = image;
   }
 
   public String getGenre() {
@@ -98,7 +109,8 @@ public class Book {
   }
 
   public void setAuthor(String author) {
-    this.author = checkNotNull(author, Constant.NOT_FOUND_MESSAGE, "author");
+    checkArgument(author != null && !author.isEmpty(), Constant.NOT_NULL_MESSAGE, "author");
+    this.author = author;
   }
 
   public String getTitle() {
@@ -106,7 +118,8 @@ public class Book {
   }
 
   public void setTitle(String title) {
-    this.title = checkNotNull(title, Constant.NOT_FOUND_MESSAGE, "title");
+    checkArgument(title != null && !title.isEmpty(), Constant.NOT_NULL_MESSAGE, "title");
+    this.title = title;
   }
 
   public String getSubtitle() {
@@ -114,7 +127,8 @@ public class Book {
   }
 
   public void setSubtitle(String subtitle) {
-    this.subtitle = checkNotNull(subtitle, Constant.NOT_FOUND_MESSAGE, "subtitle");
+    checkArgument(subtitle != null && !subtitle.isEmpty(), Constant.NOT_NULL_MESSAGE, "subtitle");
+    this.subtitle = subtitle;
   }
 
   public String getPublisher() {
@@ -122,7 +136,9 @@ public class Book {
   }
 
   public void setPublisher(String publisher) {
-    this.publisher = checkNotNull(publisher, Constant.NOT_FOUND_MESSAGE, "publisher");
+    checkArgument(publisher != null && !publisher.isEmpty(), Constant.NOT_NULL_MESSAGE,
+        "publisher");
+    this.publisher = publisher;
   }
 
   public String getYear() {
@@ -130,7 +146,8 @@ public class Book {
   }
 
   public void setYear(String year) {
-    this.year = checkNotNull(year, Constant.NOT_FOUND_MESSAGE, "year");
+    checkArgument(year != null && !year.isEmpty(), Constant.NOT_NULL_MESSAGE, "year");
+    this.year = year;
   }
 
   public Integer getPages() {
@@ -138,7 +155,8 @@ public class Book {
   }
 
   public void setPages(Integer pages) {
-    this.pages = checkNotNull(pages, Constant.NOT_NULL_MESSAGE, "pages");
+    checkArgument(pages != null && pages > 0, Constant.INVALID, "pages");
+    this.pages = pages;
   }
 
   public String getIsbn() {
@@ -146,7 +164,8 @@ public class Book {
   }
 
   public void setIsbn(String isbn) {
-    this.isbn = checkNotNull(isbn, Constant.NOT_FOUND_MESSAGE, "isbn");
+    checkArgument(isbn != null && isNumeric(isbn), Constant.NOT_NULL_MESSAGE, "name");
+    this.isbn = isbn;
   }
 
   public Long getId() {

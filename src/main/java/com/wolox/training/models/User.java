@@ -1,6 +1,6 @@
 package com.wolox.training.models;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
 
 import com.wolox.training.Constant;
 import com.wolox.training.exceptions.AlreadyOwnedException;
@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "users")
@@ -28,12 +29,15 @@ public class User {
   private Long id;
 
   @Column(nullable = false, unique = true)
+  @NotNull
   private String userName;
 
   @Column(nullable = false)
+  @NotNull
   private String name;
 
   @Column(nullable = false)
+  @NotNull
   private LocalDate birthDate;
 
   @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
@@ -52,7 +56,8 @@ public class User {
   }
 
   public void setUserName(String userName) {
-    this.userName = checkNotNull(userName, Constant.NOT_NULL_MESSAGE, "userName");
+    checkArgument(userName != null && !userName.isEmpty(), Constant.NOT_NULL_MESSAGE, "userName");
+    this.userName = userName;
   }
 
   public String getName() {
@@ -60,7 +65,8 @@ public class User {
   }
 
   public void setName(String name) {
-    this.name = checkNotNull(name, Constant.NOT_NULL_MESSAGE, "name");
+    checkArgument(name != null && !name.isEmpty(), Constant.NOT_NULL_MESSAGE, "name");
+    this.name = name;
   }
 
   public LocalDate getBirthDate() {
@@ -68,7 +74,9 @@ public class User {
   }
 
   public void setBirthDate(LocalDate birthDate) {
-    this.birthDate = checkNotNull(birthDate, Constant.NOT_NULL_MESSAGE, "birthDate");
+    checkArgument(birthDate != null && birthDate.isBefore(LocalDate.now()),
+        Constant.INVALID, "date");
+    this.birthDate = birthDate;
   }
 
   public List<Book> getBooks() {
@@ -79,7 +87,7 @@ public class User {
     this.books = books;
   }
 
-  public void addBook(Book book) throws AlreadyOwnedException {
+  public void addBook(Book book) {
     if (books.contains(book)) {
       throw new AlreadyOwnedException("Book Already Owned");
     } else {
@@ -87,7 +95,7 @@ public class User {
     }
   }
 
-  public void removeBook(Book book) throws NotOwnedException {
+  public void removeBook(Book book) {
     if (!books.contains(book)) {
       throw new NotOwnedException("Book Not Owned");
     } else {
