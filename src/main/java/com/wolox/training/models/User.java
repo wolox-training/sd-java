@@ -47,6 +47,14 @@ public class User {
     books = new ArrayList<>();
   }
 
+  public User(String userName, String name, LocalDate birthDate,
+      List<Book> books) {
+    this.setUserName(userName);
+    this.setName(name);
+    this.setBirthDate(birthDate);
+    this.setBooks(books);
+  }
+
   public Long getId() {
     return id;
   }
