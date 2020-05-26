@@ -46,9 +46,9 @@ public class UserControllerTests {
 
   private User user = new UserFactory().createUserWithoutBooks();
   List<User> oneUserList = Arrays.asList(user);
-  private User       secondUser = new UserFactory().createUserWithoutBooks();
-  private List<User> allUsers   = Arrays.asList(user, secondUser);
-  private Book       book       = new BookFactory().createBookWithOutUser();
+  private User secondUser = new UserFactory().createUserWithoutBooks();
+  private List<User> allUsers = Arrays.asList(user, secondUser);
+  private Book book = new BookFactory().createBookWithOutUser();
 
   @Test
   public void whenFindAll_thenAllBooksAreReturned() throws Exception {
@@ -57,8 +57,8 @@ public class UserControllerTests {
         .perform(get("/api/users").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(2)))
-        .andExpect(jsonPath("$[0].userName").value(user.getUserName()))
-        .andExpect(jsonPath("$[1].userName").value(secondUser.getUserName()));
+        .andExpect(jsonPath("$[0].userName").value(user.getUsername()))
+        .andExpect(jsonPath("$[1].userName").value(secondUser.getUsername()));
   }
 
   @Test
@@ -71,24 +71,24 @@ public class UserControllerTests {
             String.format(
                 "{\"id\":null,\"userName\":\"%s\","
                     + "\"name\":\"%s\",\"birthDate\":\"%s\",\"books\":[]}",
-                user.getUserName(), user.getName(), user.getBirthDate()
+                user.getUsername(), user.getName(), user.getBirthDate()
             )
         ));
   }
 
   @Test
   public void whenFindByUserNameWhichExists_thenBookIsReturned() throws Exception {
-    when(mockUserRepository.findFirstByUserName(user.getUserName())).thenReturn(
+    when(mockUserRepository.findFirstByUsername(user.getUsername())).thenReturn(
         java.util.Optional.ofNullable(user));
     mvc
-        .perform(get("/api/users?userName=" + user.getUserName())
+        .perform(get("/api/users?userName=" + user.getUsername())
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().json(
             String.format(
                 "{\"id\":null,\"userName\":\"%s\","
                     + "\"name\":\"%s\",\"birthDate\":\"%s\",\"books\":[]}",
-                user.getUserName(), user.getName(), user.getBirthDate()
+                user.getUsername(), user.getName(), user.getBirthDate()
             )
         ));
   }
