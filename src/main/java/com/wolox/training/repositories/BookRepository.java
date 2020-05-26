@@ -11,5 +11,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
 
   Optional<Book> findFirstByAuthor(String author);
 
+  Book findFirstByIsbn(String isbn);
+
   Optional<List<Book>> findByTitle(String title);
 }

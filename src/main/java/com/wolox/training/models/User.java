@@ -50,7 +50,7 @@ public class User {
   }
 
   public User(String username, String name, LocalDate birthDate,
-      List<Book> books) {
+      List<Book> books, String password) {
     this.setUsername(username);
     this.setName(name);
     this.setBirthDate(birthDate);
