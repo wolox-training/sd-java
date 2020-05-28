@@ -1,11 +1,13 @@
 package com.wolox.training.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.wolox.training.Constant;
 import com.wolox.training.exceptions.IdMismatchException;
 import com.wolox.training.exceptions.NotFoundException;
 import com.wolox.training.models.Book;
 import com.wolox.training.repositories.BookRepository;
 import com.wolox.training.repositories.UserRepository;
+import com.wolox.training.services.OpenLibraryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -32,6 +34,9 @@ public class BookController {
 
   @Autowired
   private BookRepository bookRepository;
+
+  @Autowired
+  private OpenLibraryService openLibraryService;
 
   @Autowired
   private UserRepository userRepository;
@@ -118,5 +123,19 @@ public class BookController {
     }
     bookRepository.findById(id).orElseThrow(() -> new NotFoundException(Constant.BOOK_NOT_FOUND));
     return bookRepository.save(book);
+  }
+
+  @ApiOperation(value = "Given an ISBN, the corresponding book is returned", response = Book.class)
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = Constant.OK_MESSAGE),
+      @ApiResponse(code = 404, message = Constant.NOT_FOUND_MESSAGE),
+      @ApiResponse(code = 401, message = Constant.NOT_AUTHORIZED_MESSAGE),
+      @ApiResponse(code = 403, message = Constant.FORBIDDEN_MESSAGE)
+  })
+  @GetMapping("/isbn/{ISBN}")
+  public Book findByISBN(
+      @ApiParam(value = "ISBN of the book to be found", required = true) @PathVariable String ISBN)
+      throws JsonProcessingException {
+    return openLibraryService.bookInfo(ISBN);
   }
 }

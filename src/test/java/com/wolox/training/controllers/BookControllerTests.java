@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.wolox.training.models.Book;
 import com.wolox.training.repositories.BookRepository;
 import com.wolox.training.repositories.UserRepository;
+import com.wolox.training.services.OpenLibraryService;
 import com.wolox.training.support.factories.BookFactory;
 import java.util.Arrays;
 import java.util.List;
@@ -39,6 +40,8 @@ public class BookControllerTests {
   MockMvc mvc;
   @MockBean
   private UserRepository userRepository;
+  @MockBean
+  private OpenLibraryService mockOpenLibraryService;
   private Book book = new BookFactory().createBookWithOutUser();
   private Book secondBook = new BookFactory().createBookWithOutUser();
   private List<Book> allBooks = Arrays.asList(book, secondBook);
@@ -138,6 +141,21 @@ public class BookControllerTests {
         .thenReturn(java.util.Optional.ofNullable(book));
 
     mvc.perform(put("/api/books/1")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content("{\"id\":\"1\", \"genre\":\"Some Genre\","
+            + "\"author\":\"Some Author\",\"image\":\"Some image\",\"title\":\""
+            + "Some title\",\"publisher\":\"Some publisher\",\"year\":"
+            + "\"2020\",\"pages\":999,\"isbn\":999 }"))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
+  public void whenFindExternalBook_thenBookIsReturned() throws Exception {
+    when(mockOpenLibraryService.bookInfo("123"))
+        .thenReturn(book);
+
+    mvc.perform(get("/api/books/isbn/123")
         .contentType(MediaType.APPLICATION_JSON)
         .content("{\"id\":\"1\", \"genre\":\"Some Genre\","
             + "\"author\":\"Some Author\",\"image\":\"Some image\",\"title\":\""
