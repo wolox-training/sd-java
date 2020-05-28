@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.wolox.training.models.Book;
 import com.wolox.training.repositories.BookRepository;
+import com.wolox.training.repositories.UserRepository;
 import com.wolox.training.support.factories.BookFactory;
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -33,17 +35,18 @@ public class BookControllerTests {
 
   @MockBean
   BookRepository mockBookRepository;
-
   @Autowired
   MockMvc mvc;
-
-  private Book       book        = new BookFactory().createBookWithOutUser();
-  private Book       secondBook  = new BookFactory().createBookWithOutUser();
-  private List<Book> allBooks    = Arrays.asList(book, secondBook);
+  @MockBean
+  private UserRepository userRepository;
+  private Book book = new BookFactory().createBookWithOutUser();
+  private Book secondBook = new BookFactory().createBookWithOutUser();
+  private List<Book> allBooks = Arrays.asList(book, secondBook);
   private List<Book> oneBookList = Arrays.asList(book);
 
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenFindAll_thenAllBooksAreReturned() throws Exception {
     when(mockBookRepository.findAll()).thenReturn(allBooks);
     mvc
@@ -55,6 +58,7 @@ public class BookControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenFindByIdWhichExists_thenBookIsReturned() throws Exception {
     when(mockBookRepository.findById(1L)).thenReturn(java.util.Optional.ofNullable(book));
     mvc
@@ -73,6 +77,7 @@ public class BookControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenFindByTitleWhichExists_thenBookIsReturned() throws Exception {
     when(mockBookRepository.findByTitle(book.getTitle())).thenReturn(
         java.util.Optional.ofNullable(oneBookList));
@@ -84,7 +89,7 @@ public class BookControllerTests {
   }
 
   @Test
-  public void whenCreateUser_thenUserIsCreated() throws Exception {
+  public void whenCreateBook_thenBookIsCreated() throws Exception {
     mvc.perform(post("/api/books")
         .contentType(MediaType.APPLICATION_JSON)
         .content("{\"genre\":\"Some Genre\","
@@ -107,6 +112,7 @@ public class BookControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenDeleteBookById_thenBookIsDeleted() throws Exception {
     when(mockBookRepository.findById(1L))
         .thenReturn(java.util.Optional.ofNullable(book));
@@ -117,6 +123,7 @@ public class BookControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenDeleteBookNotFound_thenThrowError() throws Exception {
     mvc.perform(delete("/api/books/-1")
         .contentType(MediaType.APPLICATION_JSON))
@@ -125,6 +132,7 @@ public class BookControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenUpdateBook_thenBookIsUpdated() throws Exception {
     when(mockBookRepository.findById(1L))
         .thenReturn(java.util.Optional.ofNullable(book));
