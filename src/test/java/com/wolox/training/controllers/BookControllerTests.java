@@ -24,6 +24,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -44,20 +48,22 @@ public class BookControllerTests {
   private OpenLibraryService mockOpenLibraryService;
   private Book book = new BookFactory().createBookWithOutUser();
   private Book secondBook = new BookFactory().createBookWithOutUser();
-  private List<Book> allBooks = Arrays.asList(book, secondBook);
+  private Page<Book> allBooksPaginated = new PageImpl(Arrays.asList(book, secondBook));
   private List<Book> oneBookList = Arrays.asList(book);
-
 
   @Test
   @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenFindAll_thenAllBooksAreReturned() throws Exception {
-    when(mockBookRepository.findByPublisherAndYearAndGenre(null, null, null)).thenReturn(allBooks);
+    PageRequest pageRequest = PageRequest
+        .of(0, 10, Direction.ASC, "id");
+    when(mockBookRepository.findByPublisherAndYearAndGenre(null, null, null, pageRequest))
+        .thenReturn(allBooksPaginated);
     mvc
         .perform(get("/api/books").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(2)))
-        .andExpect(jsonPath("$[0].title").value(book.getTitle()))
-        .andExpect(jsonPath("$[1].title").value(secondBook.getTitle()));
+        .andExpect(jsonPath("$.content", hasSize(2)))
+        .andExpect(jsonPath("$.content[0].title").value(book.getTitle()))
+        .andExpect(jsonPath("$.content[1].title").value(secondBook.getTitle()));
   }
 
   @Test
@@ -73,6 +79,7 @@ public class BookControllerTests {
                     + "\"author\":\"%s\",\"image\":\"%s\",\"title\":\""
                     + "%s\",\"publisher\":\"%s\",\"year\":"
                     + "\"%s\",\"pages\":%s,\"isbn\":\"%s\"}",
+
                 book.getGenre(), book.getAuthor(), book.getImage(), book.getTitle(),
                 book.getPublisher(), book.getYear(), book.getPages(), book.getIsbn()
             )

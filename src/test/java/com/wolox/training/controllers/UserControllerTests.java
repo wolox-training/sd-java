@@ -26,6 +26,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -48,19 +52,22 @@ public class UserControllerTests {
   private User user = new UserFactory().createUserWithoutBooks();
   List<User> oneUserList = Arrays.asList(user);
   private User secondUser = new UserFactory().createUserWithoutBooks();
-  private List<User> allUsers = Arrays.asList(user, secondUser);
+  private Page<User> allUsers = new PageImpl(Arrays.asList(user, secondUser));
   private Book book = new BookFactory().createBookWithOutUser();
 
   @Test
   @WithMockUser(username = "user1", password = "pwd", roles = "USER")
-  public void whenFindAll_thenAllBooksAreReturned() throws Exception {
-    when(mockUserRepository.findAll()).thenReturn(allUsers);
+  public void whenFindAll_thenAllUsersAreReturned() throws Exception {
+    PageRequest pageRequest = PageRequest
+        .of(0, 10, Direction.ASC, "id");
+
+    when(mockUserRepository.findAll(pageRequest)).thenReturn(allUsers);
     mvc
         .perform(get("/api/users").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$", hasSize(2)))
-        .andExpect(jsonPath("$[0].username").value(user.getUsername()))
-        .andExpect(jsonPath("$[1].username").value(secondUser.getUsername()));
+        .andExpect(jsonPath("$.content", hasSize(2)))
+        .andExpect(jsonPath("$.content[0].username").value(user.getUsername()))
+        .andExpect(jsonPath("$.content[1].username").value(secondUser.getUsername()));
   }
 
   @Test

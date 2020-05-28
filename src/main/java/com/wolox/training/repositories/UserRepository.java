@@ -5,6 +5,8 @@ import com.wolox.training.models.User;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   Optional<User> findFirstByUsername(String userName);
 
+  Page<User> findAll(Pageable pageable);
 
   @Query("SELECT u FROM User u WHERE "
       + "(:startDate IS NULL OR :endDate IS NULL OR u.birthDate BETWEEN :startDate AND :endDate) AND "
