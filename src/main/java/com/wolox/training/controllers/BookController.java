@@ -6,6 +6,7 @@ import com.wolox.training.exceptions.IdMismatchException;
 import com.wolox.training.exceptions.NotFoundException;
 import com.wolox.training.models.Book;
 import com.wolox.training.repositories.BookRepository;
+import com.wolox.training.repositories.UserRepository;
 import com.wolox.training.services.OpenLibraryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,6 +37,9 @@ public class BookController {
 
   @Autowired
   private OpenLibraryService openLibraryService;
+
+  @Autowired
+  private UserRepository userRepository;
 
   @ApiOperation(value = "Returns the list of all books", response = List.class)
   @ApiResponses(value = {

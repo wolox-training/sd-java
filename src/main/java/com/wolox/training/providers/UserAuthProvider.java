@@ -3,6 +3,7 @@ package com.wolox.training.providers;
 import com.wolox.training.exceptions.InvalidAuthenticationException;
 import com.wolox.training.models.User;
 import com.wolox.training.repositories.UserRepository;
+import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,7 +29,7 @@ public class UserAuthProvider implements AuthenticationProvider {
     if (!passwordEncoder.matches(password, user.getPassword())) {
       throw new InvalidAuthenticationException();
     }
-    return new UsernamePasswordAuthenticationToken(username, password);
+    return new UsernamePasswordAuthenticationToken(username, password, Collections.emptyList());
   }
 
   @Override

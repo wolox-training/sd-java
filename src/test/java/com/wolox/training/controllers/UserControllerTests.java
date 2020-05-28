@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -51,17 +52,19 @@ public class UserControllerTests {
   private Book book = new BookFactory().createBookWithOutUser();
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenFindAll_thenAllBooksAreReturned() throws Exception {
     when(mockUserRepository.findAll()).thenReturn(allUsers);
     mvc
         .perform(get("/api/users").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(2)))
-        .andExpect(jsonPath("$[0].userName").value(user.getUsername()))
-        .andExpect(jsonPath("$[1].userName").value(secondUser.getUsername()));
+        .andExpect(jsonPath("$[0].username").value(user.getUsername()))
+        .andExpect(jsonPath("$[1].username").value(secondUser.getUsername()));
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenFindByIdWhichExists_thenUserIsReturned() throws Exception {
     when(mockUserRepository.findById(1L)).thenReturn(java.util.Optional.ofNullable(user));
     mvc
@@ -69,7 +72,7 @@ public class UserControllerTests {
         .andExpect(status().isOk())
         .andExpect(content().json(
             String.format(
-                "{\"id\":null,\"userName\":\"%s\","
+                "{\"id\":null,\"username\":\"%s\","
                     + "\"name\":\"%s\",\"birthDate\":\"%s\",\"books\":[]}",
                 user.getUsername(), user.getName(), user.getBirthDate()
             )
@@ -77,6 +80,7 @@ public class UserControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenFindByUserNameWhichExists_thenBookIsReturned() throws Exception {
     when(mockUserRepository.findFirstByUsername(user.getUsername())).thenReturn(
         java.util.Optional.ofNullable(user));
@@ -86,7 +90,7 @@ public class UserControllerTests {
         .andExpect(status().isOk())
         .andExpect(content().json(
             String.format(
-                "{\"id\":null,\"userName\":\"%s\","
+                "{\"id\":null,\"username\":\"%s\","
                     + "\"name\":\"%s\",\"birthDate\":\"%s\",\"books\":[]}",
                 user.getUsername(), user.getName(), user.getBirthDate()
             )
@@ -98,7 +102,7 @@ public class UserControllerTests {
     mvc.perform(post("/api/users")
         .contentType(MediaType.APPLICATION_JSON)
         .content("{\"name\": \"sebastian\", \"username\": \"sebas\", "
-            + "\"birthDate\": \"1997-03-11\"}"))
+            + "\"birthDate\": \"1997-03-11\", \"password\": \"hola123\"}"))
         .andExpect(status().isCreated());
   }
 
@@ -113,6 +117,7 @@ public class UserControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenDeleteUserById_thenUserIsDeleted() throws Exception {
     when(mockUserRepository.findById(1L))
         .thenReturn(java.util.Optional.ofNullable(user));
@@ -123,6 +128,7 @@ public class UserControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenDeleteUserNotFound_thenThrowError() throws Exception {
     mvc.perform(delete("/api/users/-1")
         .contentType(MediaType.APPLICATION_JSON))
@@ -131,6 +137,7 @@ public class UserControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenUpdateUser_thenUserIsUpdated() throws Exception {
     when(mockUserRepository.findById(1L))
         .thenReturn(java.util.Optional.ofNullable(user));
@@ -143,6 +150,7 @@ public class UserControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenUpdateUserIdMismatches_thenUserIsNotUpdated() throws Exception {
     when(mockUserRepository.findById(1L))
         .thenReturn(java.util.Optional.ofNullable(user));
@@ -155,6 +163,7 @@ public class UserControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenAddingANewBook_thenBookIsAddedToUser() throws Exception {
 
     when(mockUserRepository.findById(1L))
@@ -171,6 +180,7 @@ public class UserControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenAddingANotExistentBook_thenBookIsNotAddedToUser() throws Exception {
     when(mockUserRepository.findById(1L))
         .thenReturn(Optional.ofNullable(user));
@@ -182,6 +192,7 @@ public class UserControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenAddingBookToNonExistentUser_thenBookIsNotAddedToUser() throws Exception {
     when(mockBookRepository.findById(1L))
         .thenReturn(Optional.ofNullable(book));
@@ -191,6 +202,7 @@ public class UserControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenAddingABookOwnedByUser_theBookIsNotAddedToUser() throws Exception {
     user.addBook(book);
     when(mockUserRepository.findById(1L))
@@ -205,6 +217,7 @@ public class UserControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenRemovingABook_thenBookIsRemovedFromUser() throws Exception {
     user.addBook(book);
     when(mockUserRepository.findById(1L))
@@ -220,6 +233,7 @@ public class UserControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenRemovingNotExistentBook_thenBookIsNotRemovedFromUser() throws Exception {
     when(mockUserRepository.findById(1L))
         .thenReturn(Optional.ofNullable(user));
@@ -231,6 +245,7 @@ public class UserControllerTests {
   }
 
   @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenRemovingBookFromNonExistentUser_thenBookIsNotRemovedFromUser() throws Exception {
     when(mockBookRepository.findById(1L))
         .thenReturn(Optional.ofNullable(book));
@@ -238,5 +253,4 @@ public class UserControllerTests {
     mvc.perform(delete("/api/users/-1/books/1").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().is4xxClientError());
   }
-
 }
