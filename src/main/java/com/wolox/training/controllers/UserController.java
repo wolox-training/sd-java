@@ -16,6 +16,9 @@ import java.security.Principal;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,8 +50,13 @@ public class UserController {
       @ApiResponse(code = 403, message = Constant.FORBIDDEN_MESSAGE)
   })
   @GetMapping
-  public Iterable<User> allUsers() {
-    return userRepository.findAll();
+  public Page<User> allUsers(
+      @RequestParam(defaultValue = "0") Integer page,
+      @RequestParam(defaultValue = "10") Integer pageSize,
+      @RequestParam(defaultValue = "id") String sortBy,
+      @RequestParam(defaultValue = "asc") String sortOrder) {
+    return userRepository
+        .findAll(PageRequest.of(page, pageSize, Direction.fromString(sortOrder), sortBy));
   }
 
   @ApiOperation(value = "Given an id, the corresponding user is returned", response = User.class)

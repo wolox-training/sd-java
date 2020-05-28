@@ -16,6 +16,9 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,10 +52,17 @@ public class BookController {
       @ApiResponse(code = 403, message = Constant.FORBIDDEN_MESSAGE)
   })
   @GetMapping
-  public List<Book> findAll(BookFilters filters) {
+  public Page<Book> findAll(
+      BookFilters filters,
+      @RequestParam(defaultValue = "0") Integer page,
+      @RequestParam(defaultValue = "10") Integer pageSize,
+      @RequestParam(defaultValue = "id") String sortBy,
+      @RequestParam(defaultValue = "asc") String sortOrder) {
+    PageRequest pageRequest = PageRequest
+        .of(page, pageSize, Direction.fromString(sortOrder), sortBy);
     return bookRepository
         .findByPublisherAndYearAndGenre(
-            filters.getPublisher(), filters.getYear(), filters.getGenre()
+            filters.getPublisher(), filters.getYear(), filters.getGenre(), pageRequest
         );
   }
 
