@@ -51,7 +51,7 @@ public class BookControllerTests {
   @Test
   @WithMockUser(username = "user1", password = "pwd", roles = "USER")
   public void whenFindAll_thenAllBooksAreReturned() throws Exception {
-    when(mockBookRepository.findAll()).thenReturn(allBooks);
+    when(mockBookRepository.findByPublisherAndYearAndGenre(null, null, null)).thenReturn(allBooks);
     mvc
         .perform(get("/api/books").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())

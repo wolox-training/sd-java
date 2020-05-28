@@ -21,6 +21,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
       + "(:name IS NULL OR LOWER(u.name) LIKE  CONCAT('%', LOWER(:name), '%'))")
   List<User> findByBirthDateBetweenAndNameIgnoreCaseContaining(
       @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate,
-      @Param("substring") CharSequence substring
+      @Param("name") CharSequence name
   );
 }
