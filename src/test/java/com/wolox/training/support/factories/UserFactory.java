@@ -21,11 +21,13 @@ public class UserFactory {
     List<Book> books = new ArrayList<>();
     Date fakeBirthday = faker.date().birthday(1, 120);
     LocalDate birthday = fakeBirthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    String password = faker.dragonBall().character();
     return new User(
         faker.name().username(),
         faker.name().name(),
         birthday,
-        books
+        books,
+        password
     );
   }
 }

@@ -30,15 +30,17 @@ public class User {
 
   @Column(nullable = false, unique = true)
   @NotNull
-  private String userName;
-
+  private String username;
+  @Column(nullable = false)
+  @NotNull
+  private String password;
   @Column(nullable = false)
   @NotNull
   private String name;
-
   @Column(nullable = false)
   @NotNull
   private LocalDate birthDate;
+  @Column(nullable = false)
 
   @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
   private List<Book> books;
@@ -47,25 +49,34 @@ public class User {
     books = new ArrayList<>();
   }
 
-  public User(String userName, String name, LocalDate birthDate,
-      List<Book> books) {
-    this.setUserName(userName);
+  public User(String username, String name, LocalDate birthDate,
+      List<Book> books, String password) {
+    this.setUsername(username);
     this.setName(name);
     this.setBirthDate(birthDate);
     this.setBooks(books);
+    this.setPassword(password);
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 
   public Long getId() {
     return id;
   }
 
-  public String getUserName() {
-    return userName;
+  public String getUsername() {
+    return username;
   }
 
-  public void setUserName(String userName) {
-    checkArgument(userName != null && !userName.isEmpty(), Constant.NOT_NULL_MESSAGE, "userName");
-    this.userName = userName;
+  public void setUsername(String username) {
+    checkArgument(username != null && !username.isEmpty(), Constant.NOT_NULL_MESSAGE, "userName");
+    this.username = username;
   }
 
   public String getName() {

@@ -4,6 +4,8 @@ import com.wolox.training.Constant;
 import com.wolox.training.exceptions.IdMismatchException;
 import com.wolox.training.exceptions.NotFoundException;
 import com.wolox.training.models.Book;
+import com.wolox.training.repositories.BookRepository;
+import com.wolox.training.repositories.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -22,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import com.wolox.training.repositories.BookRepository;
 
 @Api(value = "Operations pertaining to books")
 @RestController
@@ -31,6 +32,9 @@ public class BookController {
 
   @Autowired
   private BookRepository bookRepository;
+
+  @Autowired
+  private UserRepository userRepository;
 
   @ApiOperation(value = "Returns the list of all books", response = List.class)
   @ApiResponses(value = {

@@ -28,7 +28,7 @@ public class UserTest {
   @Autowired
   private UserRepository userRepository;
 
-  private User        user;
+  private User user;
   private UserFactory userFactory = new UserFactory();
 
   @Before
@@ -42,14 +42,14 @@ public class UserTest {
   public void whenCreateUser_thenUserIsPersisted() {
     User persistedUser = userRepository.findById(user.getId()).orElse(null);
 
-    assertThat(persistedUser.getUserName(), equalTo(user.getUserName()));
+    assertThat(persistedUser.getUsername(), equalTo(user.getUsername()));
     assertThat(persistedUser.getName(), equalTo(user.getName()));
     assertThat(persistedUser.getBirthDate(), equalTo(user.getBirthDate()));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void whenCreateUserWithoutUserName_thenThrowException() {
-    user.setUserName(null);
+    user.setUsername(null);
     entityManager.persist(user);
     entityManager.flush();
   }
@@ -70,13 +70,13 @@ public class UserTest {
 
   @Test
   public void whenFindFirstByUserName_thenReturnUser() {
-    User userByUserName = userRepository.findFirstByUserName(user.getUserName()).orElse(null);
-    assertThat(userByUserName.getUserName(), equalTo(user.getUserName()));
+    User userByUserName = userRepository.findFirstByUsername(user.getUsername()).orElse(null);
+    assertThat(userByUserName.getUsername(), equalTo(user.getUsername()));
   }
 
   @Test
   public void whenFindFirstByUserNameWithUnknownUserName_thenReturnNull() {
-    User userByUserName = userRepository.findFirstByUserName("n0t 4 n4m3").orElse(null);
+    User userByUserName = userRepository.findFirstByUsername("n0t 4 n4m3").orElse(null);
     assertThat(userByUserName == null, is(true));
   }
 }

@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiResponses;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -72,7 +73,7 @@ public class UserController {
   @GetMapping(params = "userName")
   public User findByUsername(
       @ApiParam(value = "username of the user to be found", required = true) @RequestParam String userName) {
-    return userRepository.findFirstByUserName(userName)
+    return userRepository.findFirstByUsername(userName)
         .orElseThrow(() -> new NotFoundException(Constant.USER_NOT_FOUND));
   }
 
@@ -85,6 +86,7 @@ public class UserController {
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
   public User createUser(@ApiParam(value = "User object to be saved") @RequestBody User user) {
+    user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
     return userRepository.save(user);
   }
 
