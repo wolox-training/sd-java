@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.wolox.training.Constant;
 import com.wolox.training.exceptions.IdMismatchException;
 import com.wolox.training.exceptions.NotFoundException;
+import com.wolox.training.filters.BookFilters;
 import com.wolox.training.models.Book;
 import com.wolox.training.repositories.BookRepository;
 import com.wolox.training.repositories.UserRepository;
@@ -48,8 +49,11 @@ public class BookController {
       @ApiResponse(code = 403, message = Constant.FORBIDDEN_MESSAGE)
   })
   @GetMapping
-  public List<Book> findAll() {
-    return bookRepository.findAll();
+  public List<Book> findAll(BookFilters filters) {
+    return bookRepository
+        .findByPublisherAndYearAndGenre(
+            filters.getPublisher(), filters.getYear(), filters.getGenre()
+        );
   }
 
   @ApiOperation(value = "Given an id, the corresponding book is returned", response = Book.class)
