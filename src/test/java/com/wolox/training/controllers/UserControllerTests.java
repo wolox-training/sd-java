@@ -253,4 +253,23 @@ public class UserControllerTests {
     mvc.perform(delete("/api/users/-1/books/1").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().is4xxClientError());
   }
+
+  @Test
+  @WithMockUser(username = "user1", password = "pwd", roles = "USER")
+  public void whenGettingCurrentUser_thenReturnsTheLoggedUser() throws Exception {
+    user.setUsername("user1");
+    when(mockUserRepository.findFirstByUsername("user1"))
+        .thenReturn(java.util.Optional.ofNullable(user));
+
+    mvc
+        .perform(get("/api/users/current-user").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(content().json(
+            String.format(
+                "{\"id\":null,\"username\":\"%s\","
+                    + "\"name\":\"%s\",\"birthDate\":\"%s\",\"books\":[]}",
+                user.getUsername(), user.getName(), user.getBirthDate()
+            )
+        ));
+  }
 }

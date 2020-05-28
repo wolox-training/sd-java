@@ -12,7 +12,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.security.Principal;
 import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -157,5 +159,19 @@ public class UserController {
         .orElseThrow(() -> new NotFoundException(Constant.BOOK_NOT_FOUND));
     user.removeBook(book);
     return userRepository.save(user);
+  }
+
+  @ApiOperation(value = "Get logged user info", response = User.class)
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = Constant.OK_MESSAGE),
+      @ApiResponse(code = 404, message = Constant.NOT_FOUND_MESSAGE),
+      @ApiResponse(code = 401, message = Constant.NOT_AUTHORIZED_MESSAGE),
+      @ApiResponse(code = 403, message = Constant.FORBIDDEN_MESSAGE)
+  })
+  @GetMapping("/current-user")
+  public User currentUser(HttpServletRequest request) {
+    Principal principal = request.getUserPrincipal();
+    return userRepository.findFirstByUsername(principal.getName())
+        .orElseThrow(() -> new NotFoundException(Constant.USER_NOT_FOUND));
   }
 }
