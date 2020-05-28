@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
+  Optional<Book> findFirstByPublisherAndYearAndGenre(String publisher, String year, String genre);
+
   Optional<Book> findFirstByAuthor(String author);
 
   Book findFirstByIsbn(String isbn);
