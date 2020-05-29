@@ -4,12 +4,20 @@ import com.wolox.training.models.Book;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-  Optional<Book> findFirstByPublisherAndYearAndGenre(String publisher, String year, String genre);
+  @Query("SELECT b FROM Book b WHERE "
+      + "(:publisher IS NULL OR publisher = :publisher) AND "
+      + "(:year IS NULL OR year = :year) AND "
+      + "(:genre IS NULL OR genre = :genre)")
+  List<Book> findByPublisherAndYearAndGenre(
+      @Param("publisher") String publisher, @Param("year") String year, @Param("genre") String genre
+  );
 
   Optional<Book> findFirstByAuthor(String author);
 
